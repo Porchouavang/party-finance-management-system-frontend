@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="public/assets/img/logo/logo.png" />
+    <meta name="rocket-loader" content="manual" data-cfasync="false" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ລະບົບຈັດການການເງິນ</title>
+
+    <!-- Frontend -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- ================== BEGIN core-css ================== -->
+    <link href="public/assets/css/e-commerce/vendor.min.css" rel="stylesheet" />
+    <link href="public/assets/css/e-commerce/app.min.css" rel="stylesheet" />
+
+    <!-- Backend -->
+    <link href="public/assets/css/vendor.min.css" rel="stylesheet" />
+    <link href="public/assets/css/default/app.min.css" rel="stylesheet" />
+
+    <!-- ================== END core-css ================== -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <!-- ================== BEGIN page-css ================== -->
+    <link
+      href="public/assets/plugins/jvectormap-next/jquery-jvectormap.css"
+      rel="stylesheet"
+    />
+    <link href="public/assets/plugins/nvd3/build/nv.d3.css" rel="stylesheet" />
+    <link
+      href="public/assets/plugins/bootstrap-daterangepicker/daterangepicker.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="public/assets/plugins/gritter/css/jquery.gritter.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Noto Sans Lao"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    * {
+      font-family: "Noto Sans Lao";
+    }
+    /* CalendarComponent.css */
+
+.calendar-container {
+  max-width: 400px;
+  margin: 50px auto;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.calendar-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.custom-calendar {
+  border: none;
+}
+
+.selected-date {
+  margin-top: 20px;
+  font-weight: bold;
+  color: #555;
+}
+.calendar-table {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  font-family: Arial, sans-serif;
+  overflow-x: auto;
+}
+
+.header-row, .row {
+  display: flex;
+}
+
+.cell {
+  border: 1px solid #ddd;
+  padding: 10px;
+  min-width: 100px;
+  text-align: center;
+}
+
+.header-room {
+  background: #f4f4f4;
+  font-weight: bold;
+}
+
+.header-date {
+  background: #f9f9f9;
+  font-weight: bold;
+}
+
+.room-name {
+  background: #f1f1f1;
+  font-weight: bold;
+}
+
+.date-slot {
+  background: #fff;
+  height: 50px;
+}
+
+  </style>
+  <body>
+    <div id="app" class="fade show app app-sidebar-fixed">
+      <div id="root"></div>
+    </div>
+    <script type="module" src="/src/main.jsx"></script>
+
+    <!-- <script src="public/assets/js/vendor.min.js" type="0e1cb55dd8894d471bfe47dc-text/javascript"></script>
+<script src="public/assets/js/app.min.js" type="0e1cb55dd8894d471bfe47dc-text/javascript"></script>
+
+
+<script src="public/assets/plugins/gritter/js/jquery.gritter.js" type="0e1cb55dd8894d471bfe47dc-text/javascript"></script>
+<script src="public/assets/plugins/sweetalert/dist/sweetalert.min.js" type="0e1cb55dd8894d471bfe47dc-text/javascript"></script>
+<script src="public/assets/js/demo/ui-modal-notification.demo.js" type="0e1cb55dd8894d471bfe47dc-text/javascript"></script>
+<script src="public/assets/plugins/%40highlightjs/cdn-public/assets/highlight.min.js" type="0e1cb55dd8894d471bfe47dc-text/javascript"></script> -->
+    <script
+      src="public/assets/js/demo/render.highlight.js"
+      type="0e1cb55dd8894d471bfe47dc-text/javascript"
+    ></script>
+
+    <script
+      src="public/assets/js/vendor.min.js"
+      type="057e04e16357c076fb2ba3e6-text/javascript"
+    ></script>
+    <script
+      src="public/assets/js/app.min.js"
+      type="057e04e16357c076fb2ba3e6-text/javascript"
+    ></script>
+    <!-- ================== END core-js ================== -->
+    <script
+      src="public/assets/js/demo/login-v2.demo.js"
+      type="aff63c3064c749ed39e88688-text/javascript"
+    ></script>
+
+    <!-- ================== BEGIN page-js ================== -->
+    <script
+      src="public/assets/plugins/d3/d3.min.js"
+      type="057e04e16357c076fb2ba3e6-text/javascript"
+    ></script>
+    <script
+      src="public/assets/plugins/nvd3/build/nv.d3.min.js"
+      type="057e04e16357c076fb2ba3e6-text/javascript"
+    ></script>
+    <script
+      src="public/assets/plugins/jvectormap-next/jquery-jvectormap.min.js"
+      type="057e04e16357c076fb2ba3e6-text/javascript"
+    ></script>
+    <script
+      src="public/assets/plugins/jvectormap-content/world-mill.js"
+      type="057e04e16357c076fb2ba3e6-text/javascript"
+    ></script>
+    <script
+      src="public/assets/plugins/apexcharts/dist/apexcharts.min.js"
+      type="057e04e16357c076fb2ba3e6-text/javascript"
+    ></script>
+    <script
+      src="public/assets/plugins/moment/min/moment.min.js"
+      type="057e04e16357c076fb2ba3e6-text/javascript"
+    ></script>
+    <script
+      src="public/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"
+      type="057e04e16357c076fb2ba3e6-text/javascript"
+    ></script>
+    <script
+      src="public/assets/js/demo/dashboard-v3.js"
+      type="057e04e16357c076fb2ba3e6-text/javascript"
+    ></script>
+    <!-- ================== END page-js ================== -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-Y3Q0VGQKY3"
+      type="057e04e16357c076fb2ba3e6-text/javascript"
+    ></script>
+    <script type="057e04e16357c076fb2ba3e6-text/javascript">
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-Y3Q0VGQKY3');
+    </script>
+    <script
+      src="/public/assets/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js"
+      data-cf-settings="057e04e16357c076fb2ba3e6-|49"
+      defer
+    ></script>
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+      integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+      data-cf-beacon='{"rayId":"8df5ca8acf4fa808","version":"2024.10.4","r":1,"token":"4db8c6ef997743fda032d4f73cfeff63","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}}}'
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script
+      data-cfasync="false"
+      src="/public/assets/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
+    ></script>
+    <script
+      src="public/assets/js/e-commerce/vendor.min.js"
+      type="46b4fa4fa08aab5b4ff6d09e-text/javascript"
+    ></script>
+    <script
+      src="public/assets/js/e-commerce/app.min.js"
+      type="46b4fa4fa08aab5b4ff6d09e-text/javascript"
+    ></script>
+
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-Y3Q0VGQKY3"
+      type="46b4fa4fa08aab5b4ff6d09e-text/javascript"
+    ></script>
+    <script type="46b4fa4fa08aab5b4ff6d09e-text/javascript">
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-Y3Q0VGQKY3');
+    </script>
+    <script
+      src="/public/assets/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js"
+      data-cf-settings="46b4fa4fa08aab5b4ff6d09e-|49"
+      defer
+    ></script>
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+      integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+      data-cf-beacon='{"rayId":"8e71eaba8ec95064","version":"2024.10.5","r":1,"token":"4db8c6ef997743fda032d4f73cfeff63","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}}}'
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="/public/assets/js/vendor.min.js"
+      type="bab64bac17cca6f6aac71038-text/javascript"
+    ></script>
+    <script
+      src="/public/assets/js/app.min.js"
+      type="bab64bac17cca6f6aac71038-text/javascript"
+    ></script>
+    <!-- ================== END core-js ================== -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-Y3Q0VGQKY3"
+      type="bab64bac17cca6f6aac71038-text/javascript"
+    ></script>
+    <script type="bab64bac17cca6f6aac71038-text/javascript">
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-Y3Q0VGQKY3');
+    </script>
+    <script
+      src="public/assets/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js"
+      data-cf-settings="bab64bac17cca6f6aac71038-|49"
+      defer
+    ></script>
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+      integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+      data-cf-beacon='{"rayId":"8e730dafcf0a5065","version":"2024.10.5","r":1,"token":"4db8c6ef997743fda032d4f73cfeff63","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}}}'
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="public/assets/js/vendor.min.js"
+      type="0d4eb8a435a5c9d80da51be2-text/javascript"
+    ></script>
+    <script
+      src="public/assets/js/app.min.js"
+      type="0d4eb8a435a5c9d80da51be2-text/javascript"
+    ></script>
+    <!-- ================== END core-js ================== -->
+
+    <!-- ================== BEGIN page-js ================== -->
+    <script
+      src="public/assets/js/demo/pos-header.demo.js"
+      type="0d4eb8a435a5c9d80da51be2-text/javascript"
+    ></script>
+    <script
+      src="public/assets/js/demo/pos-counter-checkout.demo.js"
+      type="0d4eb8a435a5c9d80da51be2-text/javascript"
+    ></script>
+    <!-- ================== END page-js ================== -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-Y3Q0VGQKY3"
+      type="0d4eb8a435a5c9d80da51be2-text/javascript"
+    ></script>
+    <script type="0d4eb8a435a5c9d80da51be2-text/javascript">
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-Y3Q0VGQKY3');
+    </script>
+    <script
+      src="public/assets/plugins/gritter/js/jquery.gritter.js"
+      type="8c79a549f9837b759dbb25ee-text/javascript"
+    ></script>
+    <script
+      src="public/assets/plugins/sweetalert/dist/sweetalert.min.js"
+      type="8c79a549f9837b759dbb25ee-text/javascript"
+    ></script>
+    <script
+      src="public/assets/js/demo/ui-modal-notification.demo.js"
+      type="8c79a549f9837b759dbb25ee-text/javascript"
+    ></script>
+    <script
+      src="public/assets/plugins/@highlightjs/cdn-public/assets/highlight.min.js"
+      type="8c79a549f9837b759dbb25ee-text/javascript"
+    ></script>
+    <script
+      src="public/assets/js/demo/render.highlight.js"
+      type="8c79a549f9837b759dbb25ee-text/javascript"
+    ></script>
+    <!-- ================== END page-js ================== -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-Y3Q0VGQKY3"
+      type="8c79a549f9837b759dbb25ee-text/javascript"
+    ></script>
+    <script type="8c79a549f9837b759dbb25ee-text/javascript">
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-Y3Q0VGQKY3');
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const dropdownToggle = document.getElementById("navbarDropdown");
+        const dropdownMenu = dropdownToggle.nextElementSibling;
+
+        dropdownToggle.addEventListener("click", function (event) {
+          event.preventDefault(); // prevent default anchor behavior
+
+          // Toggle the 'show' class on the dropdown menu
+          dropdownMenu.classList.toggle("show");
+        });
+
+        // Optional: Close dropdown if user clicks outside
+        document.addEventListener("click", function (event) {
+          if (
+            !dropdownToggle.contains(event.target) &&
+            !dropdownMenu.contains(event.target)
+          ) {
+            dropdownMenu.classList.remove("show");
+          }
+        });
+      });
+    </script>
+    
+	<script src="public/assets/plugins/chart.js/dist/chart.umd.js" type="d927ed456b6eb09441153ef9-text/javascript"></script>
+	<script src="public/assets/js/demo/chart-js.demo.js" type="d927ed456b6eb09441153ef9-text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="public/assets/plugins/moment/min/moment.min.js" type="397c7aa4ce62c6f9ea691c16-text/javascript"></script>
+	<script src="public/assets/plugins/@fullcalendar/core/index.global.js" type="397c7aa4ce62c6f9ea691c16-text/javascript"></script>
+	<script src="public/assets/plugins/@fullcalendar/daygrid/index.global.js" type="397c7aa4ce62c6f9ea691c16-text/javascript"></script>
+	<script src="public/assets/plugins/@fullcalendar/timegrid/index.global.js" type="397c7aa4ce62c6f9ea691c16-text/javascript"></script>
+	<script src="public/assets/plugins/@fullcalendar/interaction/index.global.js" type="397c7aa4ce62c6f9ea691c16-text/javascript"></script>
+	<script src="public/assets/plugins/@fullcalendar/list/index.global.js" type="397c7aa4ce62c6f9ea691c16-text/javascript"></script>
+	<script src="public/assets/plugins/@fullcalendar/bootstrap/index.global.js" type="397c7aa4ce62c6f9ea691c16-text/javascript"></script>
+	<script src="public/assets/js/demo/calendar.demo.js" type="397c7aa4ce62c6f9ea691c16-text/javascript"></script>
+	<!-- ================== END page-js ================== -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3Q0VGQKY3" type="397c7aa4ce62c6f9ea691c16-text/javascript"></script>
+	<script type="397c7aa4ce62c6f9ea691c16-text/javascript">
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+	
+		gtag('config', 'G-Y3Q0VGQKY3');
+	</script>
+
+<!-- Google Analytics Code -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6KZ93349XS" type="397c7aa4ce62c6f9ea691c16-text/javascript"></script>
+<script type="397c7aa4ce62c6f9ea691c16-text/javascript">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-6KZ93349XS");
+</script>
+
+
+	<script src="public/assets/plugins/@highlightjs/cdn-assets/highlight.min.js" type="c213c77a4bc874600999f585-text/javascript"></script>
+	<script src="public/assets/js/demo/render.highlight.js" type="c213c77a4bc874600999f585-text/javascript"></script>
+  </body>
+</html>

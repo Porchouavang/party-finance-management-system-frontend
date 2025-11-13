@@ -1,0 +1,57 @@
+/* Small screens (less than 768px) */
+@media screen and (max-width: 767px) {
+    .section-container {
+        height: 50%;
+    }
+    .navbar {
+        display: flex; /* Flexbox layout for horizontal scrolling */
+        overflow-x: auto; /* Enables horizontal scrolling */
+        white-space: nowrap; /* Prevents wrapping */
+    }
+    .navbar > * { /* Target each child of .navbar */
+        flex: 0 0 50%; /* Ensures only two items are fully visible at a time */
+        max-width: 50%; /* Limits the width of each item */
+        box-sizing: border-box; /* Includes padding and borders in width */
+    }
+}
+
+
+/* Medium screens and up (768px to 1023px) */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .section-container {
+        height: 30%;
+    }
+    .sticky-sidebar{
+        top:auto;
+    }
+    .navbar {
+        display: flex;
+    }
+}
+
+/* Large screens and up (1024px and above) */
+@media screen and (min-width: 1024px) {
+    .section-container {
+        height: 25%;
+    }
+}
+.availability-form {
+    margin-top: -80px;
+    z-index: 2;
+    position: relative;
+}
+
+@media screen and (max-width: 575px) {
+    .availability-form {
+        margin-top: 0px;
+        padding: 0 35px;
+    }
+    .sticky-sidebar{
+        top: 100px;
+    }
+}
+.sticky-sidebar {
+    position: sticky;
+    top: 140px; /* Reduced for better visibility */
+    z-index: 1;
+}
