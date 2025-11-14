@@ -19,7 +19,7 @@ function SidebarComponent() {
     <div>
       <div id="sidebar" className="app-sidebar" data-bs-theme="">
         <div
-          className="app-sidebar-content bg-light"
+          className="app-sidebar-content"
           data-scrollbar="true"
           data-height="100%"
         >
@@ -64,7 +64,7 @@ function SidebarComponent() {
                   <div className="menu-icon text-dark">
                     <i className="fa fa-cogs"></i>
                   </div>
-                  <div className="menu-text fs-4">ຈັດການຂໍ້ມູນພື້ນຖານ</div>
+                  <div className="menu-text fs-4">ຕັ້ງຄ່າ</div>
                   <div className="menu-caret"></div>
                 </a>
                 <div className="menu-submenu">
@@ -75,7 +75,7 @@ function SidebarComponent() {
                   >
                     <a href="/admin/employee" className="menu-link mb-1">
                       <div className="menu-text">
-                        <i className="fas fa-users-cog mx-1"></i>ຂໍ້ມູນພະນັກງານ
+                        <i className="fas fa-dollar-sign mx-1"></i>ລາຍຮັບ-ລາຍຈ່າຍ
                       </div>
                     </a>
                   </div>
@@ -87,21 +87,11 @@ function SidebarComponent() {
                   >
                     <a href="/admin/room" className="menu-link mb-1">
                       <div className="menu-text">
-                        <i className="fas fa-hotel mx-1"></i>ຫ້ອງ
+                        <i className="fas fa-edit mx-1"></i> ບັນທຶກ
                       </div>
                     </a>
                   </div>
-                  <div
-                    className={`menu-item fs-5 ${
-                      location.pathname === "/admin/timework" ? "active" : ""
-                    }`}
-                  >
-                    <a href="/admin/timework" className="menu-link mb-1">
-                      <div className="menu-text">
-                        <i className="fas fa-clock mx-1"></i>ເວລາເຮັດວຽກ
-                      </div>
-                    </a>
-                  </div>
+                 
                   {/* <div className={`menu-item fs-5 ${location.pathname === "/admin/report/booking" ? "active" : ""}`}>
                     <a href="/admin/slide" className="menu-link mb-1">
                       <div className="menu-text">
@@ -109,17 +99,7 @@ function SidebarComponent() {
                       </div>
                     </a>
                   </div> */}
-                  <div
-                    className={`menu-item fs-5 ${
-                      location.pathname === "/admin/qrcode" ? "active" : ""
-                    }`}
-                  >
-                    <a href="/admin/qrcode" className="menu-link mb-1">
-                      <div className="menu-text">
-                        <i className="fas fa-money-check mx-1"></i>ບັນຊີທະນາຄານ
-                      </div>
-                    </a>
-                  </div>
+                  
                   {/* <div
                     className={`menu-item fs-5 ${
                       location.pathname === "/admin/customer" ? "active" : ""

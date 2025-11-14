@@ -37,7 +37,7 @@ function HeaderComponent() {
   return (
     <div className="sticky-top">
       {/* <!-- BEGIN #header --> */}
-      <div id="header" className="app-header bg-light">
+      <div id="header" className="app-header bg-info">
         {/* <!-- BEGIN navbar-header --> */}
         <div className="navbar-header">
           <a href="#" className="navbar-brand">
@@ -46,7 +46,7 @@ function HeaderComponent() {
               className="rounded-circle mx-2"
               alt=""
             />
-            <b className="me-3px ">ລະບົບຈັດການການເງິນຂອງງານຕ່າງໆ</b>
+            <b className="me-3px text-white">ລະບົບຈັດການການເງິນຂອງງານຕ່າງໆ</b>
           </a>
           <button
             type="button"
@@ -152,12 +152,12 @@ function HeaderComponent() {
               className="navbar-link d-flex align-items-center"
               data-bs-toggle="dropdown"
             >
-              <i className="fas fa-sign-out-alt mx-1"></i>
+              <i className="fas fa-sign-out-alt mx- text-white"></i>
               <span>
                 <a
                   href="login.html"
                   onClick={confirmLogout}
-                  className="dropdown-item fw-bold fs-5 m-2"
+                  className="dropdown-item fw-bold fs-5 m-2 text-white"
                 >
                   ອອກຈາກລະບົບ
                 </a>
