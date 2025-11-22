@@ -1,4 +1,6 @@
-import React from 'react'
+/* eslint-disable no-undef */
+/* eslint-disable react-hooks/set-state-in-effect */
+import React, { useState, useEffect } from 'react'
 import HeaderComponent from './includes/HeaderComponent'
 import SidebarComponent from './includes/SidebarComponent'
 import {
@@ -6,64 +8,345 @@ import {
   BarChart, Bar, XAxis, YAxis,
   CartesianGrid, Legend, Cell
 } from "recharts";
+import { useNavigate, useParams } from 'react-router-dom';
 import { ResponsiveContainer } from "recharts";
-
+import Swal from "sweetalert2";
 
 function PartyComponent() {
+  const { id } = useParams()
+  const [Party, setParty] = useState([]);
+  const [newParty, setNewParty] = useState({
+    name: "",
+    categoryId: id
+  });
+
+  const [selectedParty, setSelectedParty] = useState(null);
+  // const [selectedParty, setSelectedParty] = useState(null);
+  const [updatedParty, setUpdatedParty] = useState({
+    name: "",
+  });
+
+  const fetchParty = async () => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch(
+        `http://192.168.100.134:3001/api/party/select-by-category/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+      setParty(data);
+    } catch (error) {
+      console.error("Error fetching Party:", error);
+    }
+  };
+const handleUpdateParty = async (e) => {
+  e.preventDefault();
+  if (!selectedParty?.id) return;
+
+  const token = localStorage.getItem("token");
+
+  try {
+    const response = await fetch(
+      `http://192.168.100.134:3001/api/party/update/${selectedParty.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name: updatedParty.name }),
+      }
+    );
+    const data = await response.json();
+    console.log("Updated:", data);
+
+    showMessageSuccess();
+    fetchParty();
+
+    // Close modal cleanly
+    const modalEl = document.getElementById("modal-edit-employee");
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    if (modal) {
+      modal.hide();
+      document.querySelectorAll(".modal-backdrop").forEach((bd) => bd.remove());
+      document.body.classList.remove("modal-open");
+    }
+  } catch (error) {
+    showMessageError();
+    console.error("Error updating party:", error);
+  }
+};
+
+
+useEffect(() => {
+  if (id) fetchParty();
+  
+}, [id]);
+useEffect(() => {
+  if (selectedParty) {
+    setUpdatedParty({
+      name: selectedParty.name ?? "",
+      // add other fields if needed
+    });
+  }
+}, [selectedParty]);
+
+
+  const showMessageSuccess = () => {
+    Swal.fire({
+      title: "ບັນທຶກສຳເລັດ!",
+      text: "ພະແນກໃໝ່ຖືກບັນທຶກສຳເລັດແລ້ວ.",
+      icon: "success",
+      timer: 2000,
+      position: "top-end",
+      toast: true,
+      showConfirmButton: false,
+    });
+  };
+
+  const showMessageError = () => {
+    Swal.fire({
+      title: "ເກີດຂໍ້ຜິດພາດ!",
+      text: "ກະລຸນາລອງອີກຄັ້ງ!",
+      icon: "error",
+      timer: 2000,
+      position: "top-end",
+      toast: true,
+      showConfirmButton: false,
+    });
+  };
+  const handleFormSubmit = async (e) => {
+  e.preventDefault();
+  const token = localStorage.getItem("token");
+
+  try {
+    const response = await fetch(
+      "http://192.168.100.134:3001/api/party/create",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newParty),
+      }
+    );
+
+    const data = await response.json();
+    console.log(data);
+    const modalEl = document.getElementById("modal-add-employee");
+          const modal = bootstrap.Modal.getInstance(modalEl);
+          if (modal) {
+            modal.hide();
+
+            // Force backdrop cleanup if needed
+            const backdrops = document.querySelectorAll(".modal-backdrop");
+            backdrops.forEach((bd) => bd.remove());
+
+            // Remove modal-open class from body
+            document.body.classList.remove("modal-open");
+            // document.body.style = "";
+          }
+    showMessageSuccess();
+    
+    setNewParty({
+      name: "",
+      categoryId: id,
+    });
+
+    fetchParty();
+
+  } catch (error) {
+    showMessageError();
+    console.error("Error creating Party:", error);
+  }
+};
+
+
     const bgColor = [
-        'light',
-        'light',
-        'light',
+        'info',
+        'success',
+        'danger',
+        'info',
+        'success',
+        'danger',
+        'info',
+        'success',
+        'danger',
     ];
-        
-    const items = [
-        'ງານດອງຂອງທ້າວ ກ',
-        'ງານດອງຂອງທ້າວ ຂ',
-        'ງານດອງຂອງນາງ ຄ',
-        'ງານດອງຂອງທ້າວ ງ',
-        'ງານດອງຂອງທ້າວ ກ',
-        'ງານດອງຂອງທ້າວ ຂ',
-        'ງານດອງຂອງນາງ ຄ',
-        'ງານດອງຂອງທ້າວ ງ',
-        'ງານດອງຂອງທ້າວ ກ',
-        'ງານດອງຂອງທ້າວ ຂ',
-        'ງານດອງຂອງນາງ ຄ',
-        'ງານດອງຂອງທ້າວ ງ',
-        'ງານດອງຂອງທ້າວ ກ',
-        'ງານດອງຂອງທ້າວ ຂ',
-        'ງານດອງຂອງນາງ ຄ',
-        'ງານດອງຂອງທ້າວ ງ',
-        'ງານດອງຂອງທ້າວ ກ',
-        'ງານດອງຂອງທ້າວ ຂ',
-        'ງານດອງຂອງນາງ ຄ',
-        'ງານດອງຂອງທ້າວ ງ',
-    ];
-    const chartData = [
-  { name: "ງານດອງຂອງທ້າວ ກ", value: 400 },
-  { name: "ງານດອງຂອງທ້າວ ຂ", value: 300 },
-  { name: "ງານດອງຂອງນາງ ຄ", value: 200 },
-  { name: "ງານດອງຂອງທ້າວ ງ", value: 150 },
-  { name: "ງານດອງຂອງທ້າວ ກ", value: 400 },
-  { name: "ງານດອງຂອງທ້າວ ຂ", value: 300 },
-  { name: "ງານດອງຂອງນາງ ຄ", value: 200 },
-  { name: "ງານດອງຂອງທ້າວ ງ", value: 150 },
-  { name: "ງານດອງຂອງທ້າວ ກ", value: 400 },
-  { name: "ງານດອງຂອງທ້າວ ຂ", value: 300 },
-  { name: "ງານດອງຂອງນາງ ຄ", value: 200 },
-  { name: "ງານດອງຂອງທ້າວ ງ", value: 150 },
-  { name: "ງານດອງຂອງທ້າວ ກ", value: 400 },
-  { name: "ງານດອງຂອງທ້າວ ຂ", value: 300 },
-  { name: "ງານດອງຂອງນາງ ຄ", value: 200 },
-  { name: "ງານດອງຂອງທ້າວ ງ", value: 150 },
-  { name: "ງານດອງຂອງທ້າວ ກ", value: 400 },
-  { name: "ງານດອງຂອງທ້າວ ຂ", value: 300 },
-  { name: "ງານດອງຂອງນາງ ຄ", value: 200 },
-  { name: "ງານດອງຂອງທ້າວ ງ", value: 150 },
-  { name: "ງານດອງຂອງທ້າວ ກ", value: 400 },
-  { name: "ງານດອງຂອງທ້າວ ຂ", value: 300 },
-  { name: "ງານດອງຂອງນາງ ຄ", value: 200 },
-  { name: "ງານດອງຂອງທ້າວ ງ", value: 150 }
+const [chartData, setChartData] = useState([]);
+const [chartExpenditureData, setChartExpenditureData] = useState([]);
+
+const colors = [
+  "#0dbff0ff",  // info
+  "#0ed7c3ff",  // success
+  "#eb2828ff",  // danger
+  "#43c1c1ff",  // info
+  "#0dbff0ff",  // success
+  "#0ed7c3ff",  // danger
 ];
+
+
+  useEffect(() => {
+    fetch(`http://192.168.100.134:3001/api/finance/sum-income-chart-by-category/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        // Authorization: `Bearer ${token}`,
+      },
+
+    })
+      .then(res => res.json())
+      .then(data => {
+        const formatted = data.map(item => ({
+          name: item.category,
+          value: Number(item.sum_income)
+        }));
+        setChartData(formatted);
+        console.log("Formatted Chart Data:", formatted);
+      })
+      .catch(err => console.error(err));
+  }, []);
+
+  console.log("formatted data:", chartData);
+
+
+  useEffect(() => {
+    fetch(`http://192.168.100.134:3001/api/finance/sum-expenditure-chart-by-category/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        // Authorization: `Bearer ${token}`,
+      },
+
+    })
+      .then(res => res.json())
+      .then(data => {
+        const formattedExpenditure = data.map(item => ({
+          name: item.category,
+          value: Number(item.sum_expenditure)
+        }));
+        setChartExpenditureData(formattedExpenditure);
+        console.log("FormattedExpenditure Chart Data:", formattedExpenditure);
+      })
+      .catch(err => console.error(err));
+  }, []);
+
+  console.log("formatted data:", chartExpenditureData);
+
+
+const handleInputChange = (e) => {
+  const { name, value } = e.target;
+  setNewParty((prevParty) => ({
+    ...prevParty,
+    [name]: value,
+  }));
+};
+const navigate = useNavigate();
+
+const goToOwnerPartyPage = (id) => {
+  navigate(`/ownerparty/${id}`);
+};
+const fetchPartyById = async (partyId) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(
+      `http://192.168.100.134:3001/api/party/select-by-id/${partyId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+
+    // If API returns an array
+    const partyObj = Array.isArray(data) ? data[0] : data;
+
+    setSelectedParty(partyObj || null);
+
+    // Populate only the 'name' field for updating
+    if (partyObj) {
+      setUpdatedParty({ name: partyObj.name || "" });
+    }
+  } catch (error) {
+    console.error("Error fetching party by ID:", error);
+    setSelectedParty(null);
+  }
+};
+
+
+  // Confirm before deletion
+  const confirmDelete = (id) => {
+    console.log(id);
+    Swal.fire({
+      title: "ຕ້ອງການລຶບແທ້ ຫຼື ບໍ່?",
+      text: "ທ່ານແນ່ໃຈບໍ ທີ່ຈະລຶບລະຫັດທີ່: " + id,
+      icon: "warning",
+      showCancelButton: true,
+      cancelButtonText: "ຍົກເລີກ",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "ຢືນຢັນ!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteParty(id);
+      }
+    });
+  };
+
+  // Delete Category from the API
+  const deleteParty = async (id) => {
+    const token = localStorage.getItem("token");
+    await fetch(`http://192.168.100.134:3001/api/party/delete/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        Swal.fire({
+          title: "ລົບລ້າງສຳເລັດ!",
+          text: "ຂໍ້ມູນໄດ້ຖືກລຶບສຳເລັດແລ້ວ",
+          icon: "success",
+          timer: 2000,
+          position: "top-end",
+          toast: true,
+          showConfirmButton: false,
+        });
+        fetchParty();
+      })
+      .catch((error) => {
+        console.error("Error deleting bank employee:", error);
+        Swal.fire({
+          title: "ເກີດຂໍ້ຜິດພາດ!",
+          text: "ກະລຸນາກວດສອບອີກຄັ້ງ!",
+          icon: "error",
+          timer: 2000,
+          position: "top-end",
+          toast: true,
+          showConfirmButton: false,
+        });
+      });
+  };
+
+  useEffect(() => {
+  if (selectedParty) {
+    setUpdatedParty({
+      name: selectedParty.name ?? "",
+      // other fields if needed
+    });
+  }
+}, [selectedParty]);
 
   return (
     <div>
@@ -75,7 +358,7 @@ function PartyComponent() {
           <li className="breadcrumb-item">
             <a href="javascript:;">ໜ້າຫຼັກ</a>
           </li>
-          <li className="breadcrumb-item active">ຂໍ້ມູນປະເພດງານ</li>
+          <li className="breadcrumb-item active">ຂໍ້ມູນເຈົ້າຂອງ{Party[0]?.category}</li>
         </ol>
         {/* <!-- END breadcrumb --> */}
         {/* <!-- BEGIN page-header --> */}
@@ -85,15 +368,15 @@ function PartyComponent() {
         {/* <!-- BEGIN row --> */}
         <div className="container-fluid mt-4">
           <div className="row">
-            <div className="col-md-5">
+            <div className="col-md-12">
               <div className="row">
                 <div className="col-md-4">
                   <a
-                    className="btn btn-light text-dark"
+                    className="btn btn-info"
                     href="#modal-add-employee"
                     data-bs-toggle="modal"
                   >
-                    <i className="fa fa-plus mx-1"></i>ເພີ່ມປະເພດງານໃໝ່
+                    <i className="fa fa-plus mx-1"></i>ເພີ່ມເຈົ້າຂອງງານໃໝ່
                   </a>
                 </div>
                 <div className="col-md-5 mx-2">
@@ -114,90 +397,98 @@ function PartyComponent() {
           </div>
           <br />
         <div className="row">
-          {/* <!-- BEGIN col-3 --> */}
-          {items.map((itm) => (
-             <div className="col-xl-3  col-md-6">
-            <div className={`widget widget-stats bg-${bgColor[items.indexOf(itm)]}`}>
-
-
-              <div className="stats-icon">
-                <p className="text-dark">₭</p>
-                {/* <i className="fa fa-desktop"></i> */}
-              </div>
-              <div className="stats-info">
-                <h4 className="fs-3 text-dark">{itm}</h4>
-                <p>
-                  {/* {allIncome} */}
-                </p>
-              </div>
-            </div>
-          </div>))}
+  {Party.map((party, index) => (
+    <div className="col-xl-3 col-md-6">
+      <div className={`widget widget-stats bg-${bgColor[index % bgColor.length]}`}>
+        <div className="d-flex justify-content-between">
+        <div className="" onClick={() => goToOwnerPartyPage(party.id)}>
+          <h4 className="fs-3 text-white">{party.name}</h4>
         </div>
-        {/* Charts Section */}
-<div className="row mt-4">
-  {/* Pie Chart */}
-  <div className="col-md-6">
-    <div className="card p-3">
-      <h4 className="text-center">ສັດສ່ວນປະເພດງານ</h4>
-
-      <div style={{ width: "100%", height: 300 }}>
-        <ResponsiveContainer>
-          <PieChart>
-            <Pie
-              data={chartData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius="80%"
-              label
-            >
-              <Cell fill="#276958ff" />  
-              <Cell fill="#0dbff0ff" />  
-              <Cell fill="#3086d1ff" />  
-              <Cell fill="#43c1c1ff" />  
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
-
-    </div>
-  </div>
-
-  {/* Bar Chart */}
-  <div className="col-md-6">
-    <div className="card p-3">
-      <h4 className="text-center">ການປຽບທຽບລາຍຮັບ</h4>
-
-      <div style={{ width: "100%", height: 300 }}>
-        <ResponsiveContainer>
-          <BarChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="value">
-              <Cell fill="#276958ff" />  
-              <Cell fill="#0dbff0ff" />  
-              <Cell fill="#3086d1ff" />  
-              <Cell fill="#43c1c1ff" />  
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-
-    </div>
-  </div>
+        <div className="">
+          <div
+  role="button"
+  data-bs-toggle="modal"
+  data-bs-target="#modal-edit-employee"
+  onClick={() => fetchPartyById(party.id)}
+>
+  <i className="fas fa-edit text-white"></i>
 </div>
+<br />
+          <div onClick={() => confirmDelete(party.id)}><i className="fas fa-trash text-white"></i></div>
+        </div>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+
+         {/* Charts Section */}
+ <div className="row mt-4">
+   {/* Pie Chart */}
+   <div className="col-md-6">
+     <div className="card p-3">
+       <h4 className="text-center">ລາຍຮັບຕາມປະເພດງານ</h4>
+        <div style={{ width: "100%", height: 300 }}>
+       {chartData.length > 0 ? (
+         <ResponsiveContainer>
+           <PieChart>
+             <Pie
+               data={chartData}
+               dataKey="value"
+               nameKey="name"
+               cx="50%"
+               cy="50%"
+               outerRadius="80%"
+               label
+             >
+               {chartData.map((entry, index) => (
+                 <Cell key={index} fill={colors[index % colors.length]} />
+               ))}
+             </Pie>
+             <Tooltip />
+           </PieChart>
+         </ResponsiveContainer>
+       ) : (
+         <p className="text-center">Loading chart...</p>
+       )}
+     </div>
+ 
+     </div>
+   </div>
+ 
+   {/* Bar Chart */}
+   <div className="col-md-6">
+     <div className="card p-3">
+       <h4 className="text-center">ລາຍຈ່າຍຕາມປະເພດງານ</h4>
+ 
+       <div style={{ width: "100%", height: 300 }}>
+         <ResponsiveContainer width="100%" height={300}>
+           <BarChart data={chartExpenditureData}>
+             <CartesianGrid strokeDasharray="3 3" />
+             <XAxis dataKey="name" />
+             <YAxis />
+             <Tooltip />
+             <Legend />
+             <Bar dataKey="value">
+               {chartExpenditureData.map((entry, index) => (
+                 <Cell key={index} fill={colors[index % colors.length]} />
+               ))}
+             </Bar>
+           </BarChart>
+         </ResponsiveContainer>
+       </div>
+ 
+     </div>
+   </div>
+ </div>
 
 
           <div className="modal fade" id="modal-add-employee">
             <div className="modal-dialog modal-md">
               <div className="modal-content">
                 <div className="modal-header bg-primary">
-                  <h4 className="modal-title text-white">ເພີ່ມປະເພດງານໃໝ່</h4>
+                  <h4 className="modal-title text-white">ເພີ່ມເຈົ້າຂອງງານໃໝ່</h4>
                   <button
                     type="button"
                     className="btn-close"
@@ -205,22 +496,72 @@ function PartyComponent() {
                     aria-hidden="true"
                   ></button>
                 </div>
-                <form>
+                <form onSubmit={handleFormSubmit}>
                   <div className="modal-body">
                     <div className="row">
                       <div className="col-md-6 mb-3">
                         <div className="label mb-1 fs-5">
-                          ປະເພດງານ <span className="text-danger">*</span>
+                          ເຈົ້າຂອງງານ <span className="text-danger">*</span>
                         </div>
                         <input
                           type="text"
                           className="form-control"
-                          name="first_name"
-                          placeholder="ກະລຸນາປ້ອນປະເພດງານ"
-                        //   value={newEmployee.first_name}
-                        //   onChange={handleInputChange}
+                          name="name"
+                          placeholder="ກະລຸນາປ້ອນເຈົ້າຂອງງານ"
+                          value={newParty.name}
+                          onChange={handleInputChange}
                           required
                         />
+                      </div>
+                      
+                    </div>
+                  </div>
+                  <div className="modal-footer d-flex justify-content-between">
+                    <button
+                      type="button"
+                      data-bs-dismiss="modal"
+                      className="btn btn-danger"
+                    >
+                      <i className="fa fa-times mx-1"></i>ຍົກເລີກ
+                    </button>
+                    <button className="btn btn-primary">
+                      <i className="fa fa-print mx-1"></i>ເພີ່ມໃໝ່
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div className="modal fade" id="modal-edit-employee">
+            <div className="modal-dialog modal-md">
+              <div className="modal-content">
+                <div className="modal-header bg-info">
+                  <h4 className="modal-title text-white">ແກ້ໄຂເຈົ້າຂອງງານໃໝ່</h4>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-hidden="true"
+                  ></button>
+                </div>
+                <form onSubmit={handleUpdateParty}>
+                  <div className="modal-body">
+                    <div className="row">
+                      <div className="col-md-6 mb-3">
+                        <div className="label mb-1 fs-5">
+                          ເຈົ້າຂອງງານ <span className="text-danger">*</span>
+                        </div>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="name"
+                          placeholder="ກະລຸນາປ້ອນເຈົ້າຂອງງານ"
+                          value={updatedParty.name}
+                          onChange={(e) => setUpdatedParty({ ...updatedParty, name: e.target.value })}
+                          required
+                        />
+
+
                       </div>
                       
                     </div>
